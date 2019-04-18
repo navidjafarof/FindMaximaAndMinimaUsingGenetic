@@ -10,7 +10,9 @@ def get_equation_ans(x):
 def mutation(population_list):
     for i in range(0, len(population_list)):
         probability = random.randint(0, 100000)
+        print(probability)
         if probability < 10:
+            print("mutation")
             gnome = str(population_list[i])
             index = random.randint(3, 19)
             gnome = float(str(gnome[0:index]) + str(random.randint(0, 10)) + str(gnome[index + 1:len(gnome)]))
