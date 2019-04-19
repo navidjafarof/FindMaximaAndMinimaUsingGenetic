@@ -30,7 +30,7 @@ def mutation(population_list):
 
 def crossover(population_list):
     children = list()
-    for i in range(0, len(population_list),2):
+    for i in range(0, len(population_list), 2):
         genome1 = str(population_list[i])
         genome2 = str(population_list[len(population_list) - i - 1])
         child1 = -math.inf;
@@ -41,6 +41,8 @@ def crossover(population_list):
             child2 = float(str(genome2[0:index]) + str(genome1[index:len(genome1)]))
         children.append(child1)
         children.append(child2)
+    for i in range(0, len(children)):
+        population_list.append(children[i])
 
     print(len(population_list))
     print(len(children))
