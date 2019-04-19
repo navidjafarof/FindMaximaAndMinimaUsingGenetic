@@ -16,7 +16,6 @@ def get_equation_ans(x):
 def mutation(population_list):
     for i in range(0, len(population_list)):
         probability = random.randint(0, 100000)
-        print(probability)
         if probability < 10:
             print("Mutation Executed")
             gnome = str(population_list[i])
@@ -30,7 +29,8 @@ def mutation(population_list):
 
 
 def crossover(population_list):
-    for i in range(0, int(len(population_list) / 2)):
+    children = list()
+    for i in range(0, len(population_list),2):
         genome1 = str(population_list[i])
         genome2 = str(population_list[len(population_list) - i - 1])
         child1 = -math.inf;
@@ -39,8 +39,11 @@ def crossover(population_list):
             index = random.randint(3, 19)
             child1 = float(str(genome1[0:index]) + str(genome2[index:len(genome1)]))
             child2 = float(str(genome2[0:index]) + str(genome1[index:len(genome1)]))
-        population_list.append(child1)
-        population_list.append(child2)
+        children.append(child1)
+        children.append(child2)
+
+    print(len(population_list))
+    print(len(children))
 
 
 def selection(population_list):
@@ -59,9 +62,10 @@ def create_population(population_list, number_of_genome, range_min, range_max):
         population_list.append(random.random() * (range_max - range_min) + range_min)
 
 
-population = list()
-create_population(population, 1000, -2, 1)
 generation_number = int(input("Please Enter Number Of Generations:"))
+genome_number = int(input("Please Enter Number Of Genomes:"))
+population = list()
+create_population(population, genome_number, -2, 1)
 
 for i in range(0, generation_number):
     selection(population)
