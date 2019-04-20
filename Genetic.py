@@ -18,7 +18,9 @@ def show_plot(population_list):
         x.append(float(bin_to_float(population_list[i])))
     for i in range(0, len(population_list)):
         y.append(fitness(population_list[i]))
-    plt.scatter(x, y, cmap=plt.cm.Greens_r)
+    fig, axes = plt.subplots(ncols=1, nrows=1, figsize=(5, 5))
+    axes.set_title("Fitness /  Plot")
+    plt.scatter(x, y)
     plt.show()
 
 
@@ -88,7 +90,7 @@ def selection(population_list):
 
 
 def fitness(genome):
-    return -get_equation_ans(genome)
+    return get_equation_ans(genome)
 
 
 def generate_population(population_list, number_of_genome, range_min, range_max):
