@@ -7,10 +7,33 @@
 
 import math
 import random
+import struct
+import matplotlib.pyplot as plt
+
+
+def show_plot(population_list):
+    x = list()
+    y = list()
+    for i in range(0, len(population_list)):
+        x.append(float(bin_to_float(population_list[i])))
+
+    for i in range(0, len(population_list)):
+        y.append(fitness(population_list[i]))
+    plt.scatter(x, y)
+    plt.show()
+
+
+def float_to_bin(num):
+    return format(struct.unpack('!I', struct.pack('!f', num))[0], '032b')
+
+
+def bin_to_float(binary):
+    return struct.unpack('!f', struct.pack('!I', int(binary, 2)))[0]
 
 
 def get_equation_ans(x):
-    return x ** 3 * math.cos(x) + x ** 2 * math.cos(x) - x * math.sin(x)
+    y = float(bin_to_float(x))
+    return y ** 3 * math.cos(y) + y ** 2 * math.cos(y) - y * math.sin(y)
 
 
 def mutation(population_list):
@@ -18,34 +41,44 @@ def mutation(population_list):
         probability = random.randint(0, 100000)
         if probability < 10:
             print("Mutation Executed")
-            gnome = str(population_list[i])
-            index = random.randint(3, 19)
-            gnome = float(str(gnome[0:index]) + str(random.randint(0, 10)) + str(gnome[index + 1:len(gnome)]))
-            while not (-2 <= float(population_list[i]) <= 1):
-                gnome = str(population_list[i])
-                index = random.randint(0, len(gnome) - 2)
-                gnome = float(str(gnome[0:index]) + str(random.randint(0, 10)) + str(gnome[index + 1:len(gnome)]))
-            population_list[i] = float(gnome)
+            genome = population_list[i]
+            index = random.randint(0, 31)
+            genome = genome[0:index] + str(random.randint(0, 1)) + genome[index + 1:len(genome)]
+            while not (-2 <= float(bin_to_float(genome)) <= 1):
+                genome = population_list[i]
+                index = random.randint(0, 32)
+                genome = genome[0:index] + str(random.randint(0, 1)) + genome[index + 1:len(genome)]
+            population_list[i] = genome
 
 
 def crossover(population_list):
     children = list()
-    for i in range(0, len(population_list), 2):
-        genome1 = str(population_list[i])
-        genome2 = str(population_list[len(population_list) - i - 1])
-        child1 = -math.inf;
-        child2 = child1;
-        while (not (-2 <= float(child1) <= 1)) and (not (-2 <= float(child2) <= 1)):
-            index = random.randint(3, 19)
-            child1 = float(str(genome1[0:index]) + str(genome2[index:len(genome1)]))
-            child2 = float(str(genome2[0:index]) + str(genome1[index:len(genome1)]))
+    for i in range(0, len(population_list) - 1, 2):
+        index1 = -1
+        index2 = -1
+        probability = random.randint(1, 10)
+        if probability <= 3:
+            index1 = random.randint(0, int(len(population_list) / 2))
+        else:
+            index1 = random.randint(int(len(population_list) / 2), len(population_list) - 1)
+        probability = random.randint(1, 10)
+        if probability <= 3:
+            index2 = random.randint(0, int(len(population_list) / 2))
+        else:
+            index2 = random.randint(int(len(population_list) / 2), len(population_list) - 1)
+        genome1 = population_list[index1]
+        genome2 = population_list[index2]
+        index = random.randint(0, 31)
+        child1 = genome1[0:index] + genome2[index:len(genome1)]
+        child2 = genome2[0:index] + genome1[index:len(genome1)]
+        while (not (-2 <= float(bin_to_float(child1)) <= 1)) or (not (-2 <= float(bin_to_float(child1)) <= 1)):
+            index = random.randint(0, 31)
+            child1 = genome1[0:index] + genome2[index:len(genome1)]
+            child2 = genome2[0:index] + genome1[index:len(genome1)]
         children.append(child1)
         children.append(child2)
     for i in range(0, len(children)):
         population_list.append(children[i])
-
-    print(len(population_list))
-    print(len(children))
 
 
 def selection(population_list):
@@ -56,23 +89,24 @@ def selection(population_list):
 
 
 def fitness(genome):
-    return get_equation_ans(genome)
+    return -get_equation_ans(genome)
 
 
-def create_population(population_list, number_of_genome, range_min, range_max):
+def generate_population(population_list, number_of_genome, range_min, range_max):
     for i in range(0, number_of_genome):
-        population_list.append(random.random() * (range_max - range_min) + range_min)
+        population_list.append(float_to_bin(random.random() * (range_max - range_min) + range_min))
 
 
 generation_number = int(input("Please Enter Number Of Generations:"))
 genome_number = int(input("Please Enter Number Of Genomes:"))
 population = list()
-create_population(population, genome_number, -2, 1)
+generate_population(population, genome_number, -2, 1)
 
 for i in range(0, generation_number):
+    show_plot(population)
     selection(population)
     crossover(population)
     mutation(population)
 
 population.sort(key=fitness, reverse=True)
-print(population[0])
+print(bin_to_float(population[0]))
