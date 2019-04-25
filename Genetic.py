@@ -80,11 +80,11 @@ def crossover():
         population.append(children[i])
 
 
-def selection(population_list):
-    population_list.sort(key=fitness)
-    size = int(len(population_list) / 2)
+def selection():
+    population.sort(key=fitness)
+    size = int(len(population) / 2)
     for i in range(0, size):
-        population_list.remove(population_list[0])
+        population.remove(population[0])
 
 
 def fitness(genome):
