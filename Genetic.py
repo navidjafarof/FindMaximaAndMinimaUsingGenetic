@@ -88,7 +88,7 @@ def selection(population_list):
 
 
 def fitness(genome):
-    return get_equation_ans(genome)
+    return -get_equation_ans(genome)
 
 
 def generate_population():
@@ -102,13 +102,13 @@ upper_band = float(input("Please Enter Your Upper Band:"))
 generation_number = int(input("Please Enter Number Of Generations:"))
 genome_number = int(input("Please Enter Number Of Genomes:"))
 population = list()
-generate_population(population, genome_number, lower_band, upper_band)
+generate_population()
 
 for i in range(0, generation_number):
-    show_plot(population)
-    selection(population)
-    crossover(population)
-    mutation(population)
+    show_plot()
+    selection()
+    crossover()
+    mutation()
 
 population.sort(key=fitness, reverse=True)
 print(bin_to_float(population[0]))
