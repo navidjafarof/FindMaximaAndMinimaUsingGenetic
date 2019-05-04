@@ -3,7 +3,6 @@
 # If you Want to Find Maxima Your Fitness Function Must Return The Value Of Function
 # Otherwise Your Fitness Function Must Return The -Value Of Function
 
-import math
 import random
 import struct
 import matplotlib.pyplot as plt
@@ -70,7 +69,8 @@ def crossover():
         index = random.randint(0, 31)
         child1 = genome1[0:index] + genome2[index:len(genome1)]
         child2 = genome2[0:index] + genome1[index:len(genome1)]
-        while (not (lower_band <= float(bin_to_float(child1)) <= upper_band)) or (not (lower_band <= float(bin_to_float(child1)) <= upper_band)):
+        while (not (lower_band <= float(bin_to_float(child1)) <= upper_band)) or (
+                not (lower_band <= float(bin_to_float(child1)) <= upper_band)):
             index = random.randint(0, 31)
             child1 = genome1[0:index] + genome2[index:len(genome1)]
             child2 = genome2[0:index] + genome1[index:len(genome1)]
