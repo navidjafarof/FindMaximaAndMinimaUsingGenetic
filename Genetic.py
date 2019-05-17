@@ -42,7 +42,7 @@ def mutation():
             genome = population[i]
             index = random.randint(0, 31)
             genome = genome[0:index] + str(random.randint(0, 1)) + genome[index + 1:len(genome)]
-            while not (lower_band <= float(bin_to_float(genome)) <= upper_band):
+            while not (lower_bound <= float(bin_to_float(genome)) <= upper_bound):
                 genome = population[i]
                 index = random.randint(0, 32)
                 genome = genome[0:index] + str(random.randint(0, 1)) + genome[index + 1:len(genome)]
@@ -69,8 +69,8 @@ def crossover():
         index = random.randint(0, 31)
         child1 = genome1[0:index] + genome2[index:len(genome1)]
         child2 = genome2[0:index] + genome1[index:len(genome1)]
-        while (not (lower_band <= float(bin_to_float(child1)) <= upper_band)) or (
-                not (lower_band <= float(bin_to_float(child1)) <= upper_band)):
+        while (not (lower_bound <= float(bin_to_float(child1)) <= upper_bound)) or (
+                not (lower_bound <= float(bin_to_float(child1)) <= upper_bound)):
             index = random.randint(0, 31)
             child1 = genome1[0:index] + genome2[index:len(genome1)]
             child2 = genome2[0:index] + genome1[index:len(genome1)]
@@ -93,12 +93,12 @@ def fitness(genome):
 
 def generate_population():
     for i in range(0, genome_number):
-        population.append(float_to_bin(random.random() * (upper_band - lower_band) + lower_band))
+        population.append(float_to_bin(random.random() * (upper_bound - lower_bound) + lower_bound))
 
 
 function = input("Please Enter Your Function:")
-lower_band = float(input("Please Enter Your Lower Band:"))
-upper_band = float(input("Please Enter Your Upper Band:"))
+lower_bound = float(input("Please Enter Your Lower Bound:"))
+upper_bound = float(input("Please Enter Your Upper Bound:"))
 generation_number = int(input("Please Enter Number Of Generations:"))
 genome_number = int(input("Please Enter Number Of Genomes:"))
 population = list()
